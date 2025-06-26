@@ -83,41 +83,37 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         }
         return null;
     }
-
     @Override
     public Category create(Category category)
     {
         // create a new category
-
         String query = """
-                Insert into categories (category_id, name, description)
-                values (?, ?, ?)""";
+            INSERT INTO categories (name, description)
+            VALUES (?, ?)
+            """;
 
-        try(
+        try (
                 Connection connection = getConnection();
-                PreparedStatement ps = connection.prepareStatement(query);
+                PreparedStatement ps = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setInt(1, category.getCategoryId());
-            ps.setString(2, category.getName());
-            ps.setString(3, category.getDescription());
+            ps.setString(1, category.getName());
+            ps.setString(2, category.getDescription());
 
-            // return number of rows
-            int rows = ps.executeUpdate();
-            try(ResultSet resultSet = ps.getGeneratedKeys()) {
-                while (resultSet.next()) {
-                    Category result = new Category();
-                    result.setCategoryId(resultSet.getInt(1));
-                    result.setName(category.getName());
-                    result.setDescription(category.getDescription());
+            int rowsAffected = ps.executeUpdate();
 
-                    return result;
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int newId = generatedKeys.getInt(1);
+                        return new Category(newId, category.getName(), category.getDescription());
+                    }
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return null; //return null if others dont fit
+        return null;
     }
 
     @Override
