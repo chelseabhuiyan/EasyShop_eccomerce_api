@@ -54,8 +54,10 @@ public class CategoriesController
         try {
             Category category = categoryDao.getById(id);
             if (category == null)
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"); // <-- Fix added
             return category;
+        } catch(ResponseStatusException ex) {
+            throw ex; // rethrow to avoid wrapping again
         } catch(Exception ex)
         {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error");
