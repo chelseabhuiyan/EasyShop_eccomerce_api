@@ -23,36 +23,46 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     {
         List<Product> products = new ArrayList<>();
 
-        String sql = "SELECT * FROM products " +
-                "WHERE (category_id = ? OR ? = -1) " +
-                "   AND (price <= ? OR ? = -1) " +
-                "   AND (color = ? OR ? = '') ";
+        StringBuilder sql = new StringBuilder("SELECT * FROM products WHERE 1=1");
 
-        categoryId = categoryId == null ? -1 : categoryId;
-        minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
-        maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
-        color = color == null ? "" : color;
+        if (categoryId != null && categoryId != -1) {
+            sql.append(" AND category_id = ?");
+        }
+        if (minPrice != null && minPrice.compareTo(BigDecimal.ZERO) >= 0) {
+            sql.append(" AND price >= ?");
+        }
+        if (maxPrice != null && maxPrice.compareTo(BigDecimal.ZERO) >= 0) {
+            sql.append(" AND price <= ?");
+        }
+        if (color != null && !color.isEmpty()) {
+            sql.append(" AND color = ?");
+        }
 
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, categoryId);
-            statement.setInt(2, categoryId);
-            statement.setBigDecimal(3, minPrice);
-            statement.setBigDecimal(4, minPrice);
-            statement.setString(5, color);
-            statement.setString(6, color);
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+
+            int index = 1;
+
+            if (categoryId != null && categoryId != -1) {
+                statement.setInt(index++, categoryId);
+            }
+            if (minPrice != null && minPrice.compareTo(BigDecimal.ZERO) >= 0) {
+                statement.setBigDecimal(index++, minPrice);
+            }
+            if (maxPrice != null && maxPrice.compareTo(BigDecimal.ZERO) >= 0) {
+                statement.setBigDecimal(index++, maxPrice);
+            }
+            if (color != null && !color.isEmpty()) {
+                statement.setString(index++, color);
+            }
 
             ResultSet row = statement.executeQuery();
-
-            while (row.next())
-            {
+            while (row.next()) {
                 Product product = mapRow(row);
                 products.add(product);
             }
-        }
-        catch (SQLException e)
-        {
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
