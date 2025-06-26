@@ -18,6 +18,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         super(dataSource);
     }
 
+    //Fixed bug 1 with the min and max prices
     @Override
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color)
     {
@@ -163,6 +164,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         return null;
     }
 
+    //Fixes bug 2 so there is no duplicates in products
     @Override
     public void update(int productId, Product product)
     {
