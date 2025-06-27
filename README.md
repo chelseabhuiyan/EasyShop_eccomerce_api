@@ -111,4 +111,11 @@ In addition, throughout the project I went back and forth between postman, intel
 
 [EasyShop_solo_optional_postman_results](Screenshots/easyshop_optional_api_postman_results.png)
 
+![EasyShop_ HomePageView before logging in](Screenshots/before_login_view.png)
+
+![EasyShop_SearchProducts](Screenshots/search_products_with_filter.png)
+
+![EasyShop_ViewCart](Screenshots/cart.png)
+
+![EasyShop_profileView](Screenshots/profile_admin.png)
 
