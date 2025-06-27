@@ -37,6 +37,7 @@ This is the backend API for **EasyShop**, a demo e-commerce platform developed u
 2. Checkout functionality 
 3. Get cart after checkout
 4. Update product quanity straight from the cart page
+5. Possibly allowing users to create an account
 
 ---
 
@@ -67,5 +68,10 @@ Use IntelliJ or terminal:
 Create a workspace and uplad the two files easyshop_solo and easyshop_solo_optional files and run.
 Must run easyshop_solo before running the optional postman tests
 
-5. 
+5. **Run the frontend site by cloning the other repositary called EasyShop_eccomerce_frontend-website and navigate to index.html and open in your chosen browser**
+
+## User for Testing 
+Use the following usernames admin, user, george with password: password
+
 ## Screenshot of Postman tests
+
