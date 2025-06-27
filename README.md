@@ -74,4 +74,8 @@ Must run easyshop_solo before running the optional postman tests
 Use the following usernames admin, user, george with password: password
 
 ## Screenshot of Postman tests
+[EasyShop_solo_postman_results](Screenshots/easyShop_api_postman%20_results.png)
+
+[EasyShop_solo_optional_postman_results](Screenshots/easyshop_optional_api_postman_results.png)
+
 
