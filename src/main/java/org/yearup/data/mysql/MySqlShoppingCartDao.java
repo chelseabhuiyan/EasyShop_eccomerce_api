@@ -25,9 +25,9 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         ShoppingCart shoppingCart = new ShoppingCart();
 
         String sql = """
-                Select p.*, sc.* from shopping_cart sc
-                join products p on sc.product_id = p.product_id
-                where sc.user_id = ?
+                SELECT p.*, sc.* FROM shopping_cart sc
+                JOIN products p ON sc.product_id = p.product_id
+                WHERE sc.user_id = ?
                 """;
 
         try(Connection connection = getConnection();
@@ -54,10 +54,9 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     @Override
     public void addToCart(int userId, int productId) {
 
-
         String sql = """
-                insert into shopping_cart (user_id, product_id)
-                values(?, ?)
+                INSERT INTO shopping_cart (user_id, product_id)
+                VALUES (?, ?)
                 ON DUPLICATE KEY UPDATE quantity = quantity + 1;
                 """;
 
@@ -80,7 +79,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         ShoppingCart shoppingCart = new ShoppingCart();
 
         String sql = """
-                Delete from shopping_cart
+                DELETE FROM shopping_cart
                 WHERE user_id = ?
                 """;
 
@@ -101,10 +100,10 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
     public void addQuantity(int userId, int productId, int quantity) {
 
         String sql = """
-        insert into shopping_cart (user_id, product_id, quantity)
-        values (?, ?, ?)
-        on duplicate key update quantity = quantity + ?;
-        """;
+                INSERT INTO shopping_cart (user_id, product_id, quantity)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE quantity = quantity + ?;
+                """;
 
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql))
@@ -113,7 +112,6 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
             preparedStatement.setInt(2, productId);
             preparedStatement.setInt(3, quantity); //for the first time product added
             preparedStatement.setInt(4, quantity); //for duplicates
-
 
             preparedStatement.executeUpdate();
 
