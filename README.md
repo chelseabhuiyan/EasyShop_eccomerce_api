@@ -5,6 +5,34 @@
 This is the backend API for **EasyShop**, a demo e-commerce platform developed using **Spring Boot** and **MySQL**. The API supports user authentication, category and product management, and a complete shopping cart system. This version is building on a previously existing site.
 
 ---
+##  Phase 1: CategoriesController Implementation
+
+In this phase, we focused on building out the full **CRUD functionality for product categories**.
+
+### Implemented Methods in `CategoriesController`:
+- `GET /categories` – Get all categories
+- `GET /categories/{id}` – Get category by ID
+- `POST /categories` – Create a new category (**ADMIN only**)
+- `PUT /categories/{id}` – Update an existing category (**ADMIN only**)
+- `DELETE /categories/{id}` – Delete a category (**ADMIN only**)
+
+- Used `@PreAuthorize("hasRole('ADMIN')")` annotations to secure admin-only routes.
+- Developed corresponding SQL operations in `MySqlCategoriesDao`.
+
+---
+
+## Phase 2: Bug Fixes in `ProductsController`
+
+In this phase, we focused on resolving two major bugs related to **product search** and **product updates**.
+
+###  Bug 1: Incorrect Search Results
+- Search functionality using filters like `cat`, `minPrice`, `maxPrice`, and `color` was returning incorrect or incomplete results.
+- Investigated and corrected logic in `MySqlProductsDao` to properly apply all filter parameters using SQL `WHERE` clauses.
+
+### Bug 2: Duplicate Product Entries on Update
+- Updating a product resulted in duplicate rows instead of modifying the existing one.
+- The issue was caused by mistakenly using an `INSERT` operation in update logic.
+- Fixed the implementation in `MySqlProductsDao.update()` to properly use `UPDATE` SQL instead of `INSERT`.
 
 ## Features
 
@@ -72,6 +100,11 @@ Must run easyshop_solo before running the optional postman tests
 
 ## User for Testing 
 Use the following usernames admin, user, george with password: password
+
+## Challanges encountered
+In this project I encountered was the POST register test failing initially because I didnt run the create database each time before running postman tests.
+Also I had a similar challange when running the optional postman tests and they initailly where failing, until I realized I had to run the required postman tests before running the optional. 
+In addition, throughout the project I went back and forth between postman, intelj, mySQL, and the front end to test my code. 
 
 ## Screenshot of Postman tests
 [EasyShop_solo_postman_results](Screenshots/easyShop_api_postman%20_results.png)
